@@ -1,0 +1,49 @@
+<!-- ================================================
+* @group: Lightning Component
+* @description: Get Data Dictionary (CSV format)
+================================================-->
+<aura:component controller="DataDictionaryController" access="global" implements="flexipage:availableForAllPageTypes,lightning:availableforFlowScreens"> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   
+    <!--BEGIN ATTRIBUTES-->
+    <aura:attribute name="objectOptions" type="String[]" />
+    <aura:attribute name="fieldOptions" type="String[]" />
+    <aura:attribute name="selectedObject" type="String"/>
+    <aura:attribute name="selectedFields" type="List" default="['All']"/>
+    
+    <!--BEGIN BODY-->    
+    <div class="slds-panel">
+        <div class="slds-panel__body">
+            <div class="slds-grid slds-wrap slds-gutters logoutBox">
+                <div class="slds-col slds-size_12-of-12 slds-reason-div slds-logout-dd">
+                    <lightning:combobox aura:id="selectObject" name="objectName"
+                        label="Select Object:"
+                        placeholder="Select an Object"
+                        dropdownAlignment="right"
+                        variant="standard"
+                        onchange="{!c.populateFieldOptions}"
+                        options="{!v.objectOptions}"
+                        />
+                </div><br/><br/><br/>
+                <aura:if isTrue="{!v.selectedObject != null}">
+                    <div class="slds-col slds-size_12-of-12 slds-reason-div slds-logout-dd">
+                        <lightning:dualListbox aura:id="selectFields" name="FieldNames"
+                                               label="Select Field(s):"
+                                               placeholder="Select Fields"
+                                               dropdownAlignment="right"
+                                               variant="standard"
+                                               options="{!v.fieldOptions}"
+                                               value="{!v.selectedFields}"
+                                               />
+                    </div><br/>
+                </aura:if>
+                <aura:if isTrue="{!and(v.selectedObject != null,not(empty(v.selectedFields)))}">
+                    <div class="slds-col slds-size_12-of-12 slds-logout-button">
+                        <button class="slds-button slds-button--brand logout-panel-controls" aura:id="submitButton" onclick="{!c.downloadData}">Download Records</button>
+                    </div>
+                </aura:if>
+            </div>        
+        </div>
+    </div>    
+    <!--END BODY-->
+</aura:component>

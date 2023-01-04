@@ -1,0 +1,21 @@
+.THIS {
+    width: 100%;
+}
+
+.THIS .slds-logout-button {
+    margin-top: 15px;
+}
+
+.THIS .slds-logout-button {
+    width: 100%;
+}
+
+.THIS .slds-logout-button button {
+    width: 100%;
+}
+
+.THIS .logoutBox {
+    width: 100%;
+    align-self: center;
+    margin-top: 1em;
+}

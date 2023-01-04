@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Set_IsAllCustomObjectsSelected_to_False</name>
+        <label>False IsAllCustomObjectsSelected</label>
+        <locationX>1015</locationX>
+        <locationY>50</locationY>
+        <assignmentItems>
+            <assignToReference>IsAllCustomObjectsSelected</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Field_Descriptins_Cmp</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_onlyObjectsInUse</name>
+        <label>True IsAllCustomObjectsSelected</label>
+        <locationX>1014</locationX>
+        <locationY>366</locationY>
+        <assignmentItems>
+            <assignToReference>IsAllCustomObjectsSelected</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Field_Descriptins_Cmp</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>All_Custom_Objects</name>
+        <choiceText>All Custom Objects</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>All Custom Objects</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice_Data_Records</name>
+        <choiceText>{!Data_Records}</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>Data_Records</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice_Field_Descriptions</name>
+        <choiceText>{!Field_Descriptions}</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>Field_Descriptions</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>Choose_Objects</name>
+        <choiceText>Choose Objects</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Choose Objects</stringValue>
+        </value>
+    </choices>
+    <constants>
+        <description>To pull data records</description>
+        <name>Data_Records</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Data Records</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>To pull field descriptions</description>
+        <name>Field_Descriptions</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Data Schema</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>What_do_you_want_to_download value chosen by the user in the previous screen</description>
+        <name>To_Be_Downloaded</name>
+        <label>What To Be Downloaded?</label>
+        <locationX>416</locationX>
+        <locationY>693</locationY>
+        <defaultConnector>
+            <targetReference>Choose_Objects_For_Field_Descriptions</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Field Descriptions</defaultConnectorLabel>
+        <rules>
+            <name>Selected_Data_Records</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>What_do_you_want_to_download</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Data_Records</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Download_Data_Records</targetReference>
+            </connector>
+            <label>Data Records</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Which_Objects_Were_Chosen</name>
+        <label>Which Objects Were Chosen</label>
+        <locationX>736</locationX>
+        <locationY>218</locationY>
+        <defaultConnector>
+            <targetReference>Set_IsAllCustomObjectsSelected_to_False</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Choose Objects</defaultConnectorLabel>
+        <rules>
+            <name>Which_Objects_Were_Chosen_All_Custom_Objects</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Download_Field_Descriptions_For</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>All_Custom_Objects</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_onlyObjectsInUse</targetReference>
+            </connector>
+            <label>All Custom Objects</label>
+        </rules>
+    </decisions>
+    <description>Flow to fetch the Field Descriptions of objects in the ORG</description>
+    <environments>Default</environments>
+    <interviewLabel>Data Dictionary {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Data Dictionary</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Choose_Objects_For_Field_Descriptions</name>
+        <label>Choose Objects For Field Descriptions</label>
+        <locationX>597</locationX>
+        <locationY>216</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Which_Objects_Were_Chosen</targetReference>
+        </connector>
+        <fields>
+            <name>Download_Field_Descriptions_For</name>
+            <choiceReferences>All_Custom_Objects</choiceReferences>
+            <choiceReferences>Choose_Objects</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>All_Custom_Objects</defaultSelectedChoiceReference>
+            <fieldText>Download Field Descriptions For</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Data Dictionary to download data records or field descriptions</description>
+        <name>Data_Dictionary</name>
+        <label>Data Dictionary</label>
+        <locationX>175</locationX>
+        <locationY>692</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>To_Be_Downloaded</targetReference>
+        </connector>
+        <fields>
+            <name>What_do_you_want_to_download</name>
+            <choiceReferences>Choice_Field_Descriptions</choiceReferences>
+            <choiceReferences>Choice_Data_Records</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Choice_Field_Descriptions</defaultSelectedChoiceReference>
+            <fieldText>What do you want to download</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Download_Data_Records</name>
+        <label>Download Data Records</label>
+        <locationX>321</locationX>
+        <locationY>405</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>DataDictionary</name>
+            <extensionName>c:DataDictionaryCmp</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Go To Home</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Field_Descriptins_Cmp</name>
+        <label>Field Descriptins Cmp</label>
+        <locationX>1014</locationX>
+        <locationY>218</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>FieldDescriptionsCmp</name>
+            <extensionName>c:FieldDescriptionsCmp</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>isAllCustomObjectsSelected</name>
+                <value>
+                    <elementReference>IsAllCustomObjectsSelected</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <nextOrFinishButtonLabel>Go To Home</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>49</locationX>
+        <locationY>216</locationY>
+        <connector>
+            <targetReference>Data_Dictionary</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>True if &apos;All Custom Objects&apos; is chosen and False if &apos;Choose Objects&apos; is chosen</description>
+        <name>IsAllCustomObjectsSelected</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

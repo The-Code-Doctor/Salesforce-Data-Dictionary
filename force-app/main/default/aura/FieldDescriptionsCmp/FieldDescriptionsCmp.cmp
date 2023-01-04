@@ -1,0 +1,40 @@
+<!-- ================================================
+* @group: Lightning Component
+* @description: Get Field Descriptions (CSV format)
+================================================-->
+<aura:component controller="DataDictionaryController" access="global" implements="flexipage:availableForAllPageTypes,lightning:availableforFlowScreens"> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--BEGIN ATTRIBUTES-->
+    <aura:attribute name="isAllCustomObjectsSelected" type="Boolean" /><!-- We can similarly include all Standard Objects if needed -->
+    <aura:attribute name="objectOptions" type="String[]" />
+    <aura:attribute name="selectedObjects" type="List"/>
+    <aura:if isTrue="{!!v.isAllCustomObjectsSelected}">
+        <!--BEGIN BODY-->    
+        <div class="slds-panel">
+            <div class="slds-panel__body">
+                <div class="slds-grid slds-wrap slds-gutters logoutBox">
+                    <div class="slds-col slds-size_12-of-12 slds-reason-div slds-logout-dd">
+                        <lightning:dualListbox aura:id="selectObject" name="ObjectNames"
+                                               label="Select Object(s):"
+                                               placeholder="Select Objects"
+                                               dropdownAlignment="right"
+                                               variant="standard"
+                                               onchange="{!c.setObjectsSelected}"
+                                               options="{!v.objectOptions}"
+                                               />
+                    </div><br/>
+                    <aura:if isTrue="{!not(empty(v.selectedObjects))}">
+                        <div class="slds-col slds-size_12-of-12 slds-logout-button">
+                            <button class="slds-button slds-button--brand logout-panel-controls" aura:id="submitButton" onclick="{!c.downloadData}">Download Field Descriptions</button>
+                        </div>
+                    </aura:if>
+                </div>        
+            </div>
+        </div>    
+        <aura:set attribute="else">
+            <h6>Field Descriptions are being downloaded..Please make sure downloads are not disabled on your browser..</h6>
+        </aura:set>
+        <!--END BODY-->
+    </aura:if>
+</aura:component>
